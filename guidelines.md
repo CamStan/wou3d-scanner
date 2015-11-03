@@ -1,7 +1,3 @@
-
-<!-- Try to run code prettifier -->
-<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-
 # Guidelines #
 
 Please follow the guidelines listed below when contributing code to this project.  Please keep in mind that this project was started as a University class and some decisions have been made with students and teaching in mind.
@@ -19,27 +15,31 @@ Please follow the guidelines listed below when contributing code to this project
 
 * Put curly braces on their own line:
 
-<pre class="prettyprint lang-c">if(n < 0)
+```C
+if(n < 0)
 {
 
 }
 else
 {
 
-}</pre>
+}
+```
 
 * Use defines for constants
-* Use fixed width integer types when the width is known, i.e. <code class="prettyprint">uint8_t</code>
+* Use fixed width integer types when the width is known, i.e. ``uint8_t``
 * Don't use typedefs for struct types -- always write the full type:
 
-<pre class="prettyprint lang-c">struct info
+```C
+struct info
 {
     uint8_t status;
     uint8_t value;
 };
 
 // then
-void foo( struct pinInfo * );</pre>
+void foo( struct pinInfo * );
+```
 
 ## Git ##
 
