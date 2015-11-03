@@ -10,4 +10,6 @@ WOU 3D Scanner is a repository for the CS 490 Physical Computing course at Weste
 * Intel Edison remote controller using Bluetooth
 * 2 degrees of freedom (DOF) mechanical rotation
 
-### More information to come... ###
+### Contributing ###
+
+Students, please see this [Guidelines](guidelines.md)
