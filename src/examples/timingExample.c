@@ -51,20 +51,20 @@ int main()
 		on  = (unsigned int)(period*level/100);
 
 		// get start time
-		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t1);
+		clock_gettime(CLOCK_MONOTONIC, &t1);
 		// pin HIGH
 		mraa_gpio_write(pin, 1);
 		t = 0;
 		while( t < on )			// wait for on # of nanoseconds
 		{
-			clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t2);
+			clock_gettime(CLOCK_MONOTONIC, &t2);
 			t = t2.tv_nsec-t1.tv_nsec;
 		}
 		// pin LOW
 		mraa_gpio_write(pin, 0);
 		while( t < period )		// wait until period nanoseconds is up
 		{
-			clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t2);
+			clock_gettime(CLOCK_MONOTONIC, &t2);
 			t = t2.tv_nsec-t1.tv_nsec;
 		}
 		// increment and roll over level for dramatic effect
