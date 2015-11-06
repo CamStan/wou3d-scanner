@@ -17,10 +17,10 @@
  *
  */
 
-#define PIN			7			// 7 is the red LED in Lab 2, 13 for on-board LED
-#define FREQUENCY	1000		// in Hz
+#define PIN			5		// 7 is the red LED in Lab 2, 13 for on-board LED, 5 for Light source in Lab 5
+#define FREQUENCY	1000	// in Hz
 
-//#define SHOW_LEVELS
+#define SHOW_LEVELS
 
 // Exit nicely
 void quitHandler(int);		// handle SIGINT  signal
@@ -75,7 +75,7 @@ int main()
 			change = +changeAMT;
 #ifdef SHOW_LEVELS
 		if((int)level % 10 == 0)
-			printf("Level = %f\n",level);
+			printf("Level = %f, on time = %d\n",level,on);
 #endif
 	}
 
@@ -88,7 +88,8 @@ void quitHandler(int sig)
 	if (sig == SIGINT)
 	{
 		 printf("Exiting");
-		 mraa_gpio_close(pin);
+		 mraa_gpio_write(pin, 0);		// turn it off
+		 mraa_gpio_close(pin);			// release and unexport pin
 	}
 	exit(EXIT_SUCCESS);
 }
