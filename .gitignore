@@ -1,6 +1,9 @@
 # Mac OS
 .DS_Store
 
+# Makefile depend file
+*.depend
+
 # Eclipse
 .cproject
 .project
