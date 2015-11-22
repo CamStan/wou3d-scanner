@@ -11,7 +11,7 @@ void quitHandler(int);		// handle SIGINT  signal
 /**
  * @file
  * @brief Main program for the WOU Scanner
- * 
+ *
  * Entry point function.  This starts the scanner base unit
  * code.  No arguments are currently used.
  *
@@ -25,7 +25,7 @@ int main (int argc, char *argv[])
     // register our signal handler
 	std::signal(SIGINT, quitHandler);
 
-	cout << "Hello Scanner!" << endl;
+	cout << "Hello WOU Scanner!" << endl;
 	return EXIT_SUCCESS;
 }
 
