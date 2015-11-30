@@ -2,31 +2,6 @@
 #include <stdlib.h>
 #include "button.h"
 
-int main() {
-	/* Setup your example here, code that should run once
-	 */
-
-	/* Code in this loop will run repeatedly
-	 */
-	button_init(49, &f1);
-	button_init(46, &f2);
-	for (;;) {
-
-
-	}
-
-	return 0;
-}
-
-void f1(){
-	printf("A button pressed\n");
-}
-
-void f2(){
-	printf("B button pressed\n");
-}
-
-
 
 
 void * buttonThread(void * args) {
