@@ -10,8 +10,6 @@
 #define PIN_RIGHT  	45
 #define PIN_SELECT  48
 
-void f1();
-void f2();
 
 #define BIT_MASK	0x80
 
