@@ -44,7 +44,7 @@ CFLAGS = -g3 -O0 -Wall -c -fmessage-length=0 \
 		 --sysroot=$(SYSDIR) -m32 -march=i586 -ffunction-sections -fdata-sections
 
 # Linker flags
-LDFLAGS = -lm --sysroot=$(SYSDIR) -lmraa -lrt
+LDFLAGS = -lm --sysroot=$(SYSDIR) -lmraa -lrt -pthread
 
 RM = rm -f
 
