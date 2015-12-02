@@ -2,11 +2,28 @@
 #include <stdlib.h>
 #include "button.h"
 
+struct button_context * button_init(int pin, void * args){
 
+	struct button_context * button_action = calloc(1, sizeof(button_action));
+
+	button_action->gpio_button_context = mraa_gpio_init_raw(pin);
+	if (mraa_gpio_dir(button_action->gpio_button_context, MRAA_GPIO_IN) != MRAA_SUCCESS)
+	{
+		fprintf(stderr, "Coulnd't initialize GPIO on pin %d, exiting", pin);
+		exit(MRAA_ERROR_UNSPECIFIED);
+	}
+
+	button_action->action = args;
+	button_action->bits = 1;
+	button_action->thread = calloc(1, sizeof(button_action->thread));
+
+	pthread_create(button_action->thread, NULL, &buttonThread, button_action);
+	return button_action;
+}
 
 void * buttonThread(void * args) {
 	int value;
-	struct button_context * context = (struct button_context*) args;
+	struct button_context * context = (struct button_context*) args; // cast the argument
 	uint8_t shiftReg = 0xFF;
 
 	for (;;) {
@@ -33,26 +50,6 @@ void * buttonThread(void * args) {
 		usleep(500);
 	}
 
-}
-
-
-struct button_context * button_init(int pin, void * args){
-
-	struct button_context * button_action = calloc(1, sizeof(button_action));
-
-	button_action->gpio_button_context = mraa_gpio_init_raw(pin);
-	if (mraa_gpio_dir(button_action->gpio_button_context, MRAA_GPIO_IN) != MRAA_SUCCESS)
-	{
-		fprintf(stderr, "Coulnd't initialize GPIO on pin %d, exiting", pin);
-		exit(MRAA_ERROR_UNSPECIFIED);
-	}
-
-	button_action->action = args;
-	button_action->bits = 1;
-	button_action->thread = calloc(1, sizeof(button_action->thread));
-
-	pthread_create(button_action->thread, NULL, &buttonThread, button_action);
-	return button_action;
 }
 
 void button_update_function(struct button_context * context, void * args){
