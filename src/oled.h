@@ -15,6 +15,12 @@
 #include <unistd.h>
 
 /**
+ * A test method using the sparkfun code directly to verify sparkfun library
+ * code has been included in the project correctly.
+ */
+void oled_test();
+
+/**
  * Initialize all memory needed
  */
 void oled_init();
