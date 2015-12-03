@@ -61,6 +61,10 @@ SRCDIRS  = src
 OBJS    := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS_CPP))
 OBJS    += $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS_C))
 
+# silently create needed directories when compiling files in src
+# (see: http://stackoverflow.com/questions/1950926/create-directories-using-make-file)
+dir_guard=@mkdir -p $(@D)
+
 # Doxygen command
 DOXYGEN=doxygen
 DOXYGEN_SCRIPT=Doxyfile
@@ -87,10 +91,12 @@ $(PROG): $(OBJS)
 
 # meta-rule for compiling any "C" source file
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(dir_guard)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # meta-rule for compiling any "C++" source file
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(dir_guard)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # rule for cleaning re-compilable files
