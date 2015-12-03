@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "button.h"
 
-struct button_context * button_init(int pin, void * args){
+struct button_context * button_init(int pin, void (*args)()){
 
-	struct button_context * button_action = calloc(1, sizeof(struct button_context));
+	struct button_context * button_action = (struct button_context *)calloc(1, sizeof(struct button_context));
 
 	button_action->gpio_button_context = mraa_gpio_init_raw(pin);
 	if (mraa_gpio_dir(button_action->gpio_button_context, MRAA_GPIO_IN) != MRAA_SUCCESS)
@@ -15,7 +15,7 @@ struct button_context * button_init(int pin, void * args){
 
 	button_action->action = args;
 	button_action->bits = 1;
-	button_action->thread = calloc(1, sizeof(pthread_t));
+	button_action->thread = (pthread_t *)calloc(1, sizeof(pthread_t));
 
 	pthread_create(button_action->thread, NULL, &buttonThread, button_action);
 	return button_action;
