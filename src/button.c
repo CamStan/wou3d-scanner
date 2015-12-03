@@ -4,7 +4,7 @@
 
 struct button_context * button_init(int pin, void * args){
 
-	struct button_context * button_action = calloc(1, sizeof(button_action));
+	struct button_context * button_action = calloc(1, sizeof(struct button_context));
 
 	button_action->gpio_button_context = mraa_gpio_init_raw(pin);
 	if (mraa_gpio_dir(button_action->gpio_button_context, MRAA_GPIO_IN) != MRAA_SUCCESS)
@@ -15,7 +15,7 @@ struct button_context * button_init(int pin, void * args){
 
 	button_action->action = args;
 	button_action->bits = 1;
-	button_action->thread = calloc(1, sizeof(button_action->thread));
+	button_action->thread = calloc(1, sizeof(pthread_t));
 
 	pthread_create(button_action->thread, NULL, &buttonThread, button_action);
 	return button_action;
@@ -25,7 +25,7 @@ void * buttonThread(void * args) {
 	int value;
 	struct button_context * context = (struct button_context*) args; // cast the argument
 	uint8_t shiftReg = 0xFF;
-
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,NULL);
 	for (;;) {
 
 		value = mraa_gpio_read(context->gpio_button_context);
@@ -59,5 +59,6 @@ void button_update_function(struct button_context * context, void * args){
 void button_close(struct button_context * context){
 	 free(context->thread);
 	 mraa_gpio_close(context->gpio_button_context);
+	 context->action = NULL;
 	 free(context);
 }
