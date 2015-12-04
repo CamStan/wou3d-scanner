@@ -29,8 +29,8 @@
  *  LED light source MOSFET gate power supply pin -- drive high to power
  *  on the light source, or use PWM to dim
  */
-#define LIGHT_SOURCE	    5
-
+#define LIGHT_SOURCE_PIN	    5
+#define LIGHT_SOURCE_PERIOD         1000 //5kHZ in microseconds
 /**
  * Laser module MOSFET gate power supply pin -- drive high to power on
  * the laser module

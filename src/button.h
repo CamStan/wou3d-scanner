@@ -71,7 +71,7 @@ struct button_context {
  *               desired button. The button_close() function frees this and other
  *               associated pointers.
  */
-struct button_context * button_init(int, void*);
+struct button_context * button_init(int, void (*)());
 
 /**
  * Function to be watched by the thread that is responsible for debouncing this button
