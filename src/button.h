@@ -55,6 +55,7 @@ struct button_context {
 	mraa_gpio_context gpio_button_context;
 	void (*action)();
 	unsigned char bits;
+	uint8_t endFlag;
 	pthread_t * thread;
 };
 
