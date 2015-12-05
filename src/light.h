@@ -1,6 +1,3 @@
-//		struct definitions (or union)
-//		shared variables
- 
 /**
 * This file implements an API to operate a light
 * through Intels MRAA library.
@@ -9,9 +6,26 @@
 
 #ifndef LIGHT_H
 #define LIGHT_H
- 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "mraa.h"
+#include "hardware.h"
+
+/**
+ * struct that holds information for a light.
+ * Holds pointer to light pin, as well as the current
+ * brightness and period of the light.
+ */
+struct Light
+{
+	mraa_pwm_context pin;	 // "instance variables"
+	float currentBrightness; //duty cycle
+        float period;
 };
- 
+
 /**
 * light struct
 * Initializes the light and returns a struct representing the light.
@@ -23,35 +37,37 @@
 * @return           A pointer to the light struct, or NULL if it failed
 */
 struct Light * light_init(int pinNumber);
- 
+
 /**
-* Set the parameters in the light struct
-* Set the parameters in the light struct. Note this
-* function does not modify the brightness of the light.
-* @param  light The light you wish to set up
-* @param  period Length of desired PWM period
-* @return               N/A
-*/
+ * Set the parameters in the light struct
+ * @param  light The light you wish to set up
+ * @param  period Length of desired PWM period
+ * @return               N/A
+ */
+void light_setParameters(struct Light * light, float period);
+
+/**
+ * Set the duty cycle for the brightness of the light
+ * @param  light The light whose brightness will be changed
+ * @param  brightness The brightness the light will be set to (between 0 and 1)
+ * @return           N/A
+ */
 void light_setBrightness(struct Light * light, float brightness);
- 
+
 /**
-* Disable the light output, and close the pin
-* Disable the light output. Note this only shuts the light completely
-* off, but the pin for the light will still be initialized. To close the
-* pin, make a call to light_close
-* @param  light Light that will be disabled
-* @return           N/A
-*/
+ * Disable the light output, and close the pin
+ * @param  light Light that will be disabled
+ * @return           N/A
+ */
 void light_disable(struct Light * light);
- 
+
 /**
-* Enable the light
-* Turns the light back on. 
-* @param  light Light that will be enabled.
-* @return           N/A
-*/
+ * Enable the light
+ * @param  light Light that will be enabled.
+ * @return           N/A
+ */
 void light_enable(struct Lihgt * light);
- 
+
 /**
 * De-initializes (closes) the pin associated with the passed in
 * light context.
@@ -59,6 +75,10 @@ void light_enable(struct Lihgt * light);
 * @return	    N/A
 */
 void light_close(struct Light * light);
- 
+
+
 #ifdef __cplusplus
 }
+#endif
+
+#endif  /* LIGHT_H */
