@@ -12,7 +12,6 @@
 #ifndef WOU_3D_SCANNER_OLED_H
 #define WOU_3D_SCANNER_OLED_H
 #include "sparkfun/oled/Edison_OLED.h"
-#include <unistd.h>
 
 /**
  * A test method using the sparkfun code directly to verify sparkfun library
@@ -21,7 +20,8 @@
 void oled_test();
 
 /**
- * Initialize all memory needed
+ * Initialize all memory needed.  Only call this once ultil oled_close().
+ * Successive calls to oled_init() before calling oled_close() will have no effect.
  */
 void oled_init();
 
@@ -43,7 +43,8 @@ void oled_disable();
 void oled_printf(const char * args, ...);
 
 /**
- * Free all allocated memory and release all resources.
+ * Free all allocated memory and release all resources.  After calling this
+ * function, oled_init() must be called again before the oled screen will function.
  */
 void oled_close();
 
@@ -70,5 +71,24 @@ char * oled_getBuffer();
  *  @param row    The vertical cursor position.
  */
 void oled_setCursor(int column, int row);
+
+/**
+ * Get the width of the OLED display, in columns (number of characters)
+ * @return The width.
+ */
+int oled_getWidth();
+
+/**
+ * Get the height of the OLED display, in rows (number of characters)
+ * @return The height.
+ */
+int oled_getHeight();
+
+/**
+ * Calculate the buffer size (The max number of characters displayable on the
+ * OLED screen).
+ * @return The buffer size.
+ */
+int oled_calcBufferSize();
 
 #endif /* WOU_3D_SCANNER_OLED_H */
