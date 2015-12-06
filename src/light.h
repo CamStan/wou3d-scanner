@@ -1,9 +1,8 @@
-// light.h
-// public interface file
-// 		function declarations (prototypes)
-// 		constants
-//		struct definitions (or union)
-//		shared variables
+/**
+* This file implements an API to operate a light
+* through Intels MRAA library.
+* @authors Howard Passmore, Danielle Sikich, Lauren Ryan
+*/
 
 #ifndef LIGHT_H
 #define LIGHT_H
@@ -24,14 +23,19 @@ struct Light
 {
 	mraa_pwm_context pin;	 // "instance variables"
 	float currentBrightness; //duty cycle
-    float period;
+        float period;
 };
 
 /**
- * light struct
- * @param  pinNumber Arduino pin number that this light is attached to
- * @return           A pointer to the light struct, or NULL if it failed
- */
+* light struct
+* Initializes the light and returns a struct representing the light.
+* The brightness will be set to a default of 100 percent brightness.
+* The period will be set to a default of 1000, which represents 5kHZ
+* These two fields can be modified directly through the struct, or updated
+* through the setBrightness or setParameters functions.
+* @param  pinNumber Arduino pin number that this light is attached to
+* @return           A pointer to the light struct, or NULL if it failed
+*/
 struct Light * light_init(int pinNumber);
 
 /**
@@ -45,7 +49,7 @@ void light_setParameters(struct Light * light, float period);
 /**
  * Set the duty cycle for the brightness of the light
  * @param  light The light whose brightness will be changed
- * @param  brightness The brightness the light will be set to.
+ * @param  brightness The brightness the light will be set to (between 0 and 1)
  * @return           N/A
  */
 void light_setBrightness(struct Light * light, float brightness);
@@ -63,6 +67,14 @@ void light_disable(struct Light * light);
  * @return           N/A
  */
 void light_enable(struct Lihgt * light);
+
+/**
+* De-initializes (closes) the pin associated with the passed in
+* light context.
+* @param light Light that will be closed.
+* @return	    N/A
+*/
+void light_close(struct Light * light);
 
 
 #ifdef __cplusplus
