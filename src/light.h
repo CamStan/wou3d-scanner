@@ -21,7 +21,7 @@ extern "C" {
  */
 struct Light
 {
-	mraa_pwm_context pin;	 // "instance variables"
+	mraa_pwm_context pin;
 	float currentBrightness; //duty cycle
         float period;
 };
@@ -39,12 +39,12 @@ struct Light
 struct Light * light_init(int pinNumber);
 
 /**
- * Set the parameters in the light struct
+ * Set the period in the light struct
  * @param  light The light you wish to set up
- * @param  period Length of desired PWM period
+ * @param  period Length of desired PWM period (in microseconds)
  * @return               N/A
  */
-void light_setParameters(struct Light * light, float period);
+void light_setPeriod(struct Light * light, int period);
 
 /**
  * Set the duty cycle for the brightness of the light
@@ -66,12 +66,13 @@ void light_disable(struct Light * light);
  * @param  light Light that will be enabled.
  * @return           N/A
  */
-void light_enable(struct Lihgt * light);
+void light_enable(struct Light * light);
 
 /**
 * De-initializes (closes) the pin associated with the passed in
 * light context.
-* @param light Light that will be closed.
+* Also, frees memory for the light struct
+* @param light Light that will be closed, and memory deallocated
 * @return	    N/A
 */
 void light_close(struct Light * light);
