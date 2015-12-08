@@ -1,6 +1,12 @@
 /**
  * @file oled.cpp
- * @brief Implementation of oled.h
+ * @brief Control the OLED display: initialize, enable, disable, display
+ * certain things, close.
+ *
+ * This is designed to be a simple interface for controlling the Edison OLED
+ * display.
+ *
+ * @author Aaron Carson, Joseph Shin, Jason Gersztyn
  */
 
 #include "oled.h"
@@ -10,6 +16,7 @@
 #include <cstring>  // for memcpy
 #include <cctype>   // for isprint
 #include <unistd.h> // for sleep, usleep
+
 
 //----------------------------------------------------------------
 // our singleton OLED data
@@ -89,7 +96,7 @@ void clear_buffer()
 }
 
 //----------------------------------------------------------------
-// oled->h implementation.
+// oled.h implementation.
 //----------------------------------------------------------------
 
 /**
@@ -103,8 +110,6 @@ void oled_init()
 	{
 		oled = new edOLED();
 		oled->begin();
-		//columns = oled->getLCDWidth() / oled->getFontWidth();
-		//rows    = oled->getLCDHeight() / oled->getFontHeight();
 		columns = 10;
 		rows    = 6;
 		oled_clear(); // clear OLED display, set buffer, reset cursor.
@@ -153,8 +158,9 @@ void oled_disable()
 
 /**
  * Accepts arguments equivalent to printf and treats the OLED display as a
- * display.
- * The Final String when formatted cannot be larger than calc_buffer_size().
+ * display.  The Final String when formatted cannot be larger than
+ * calc_buffer_size(). (NOTE: use DEBUG macro for print statements in console)
+ *
  * @param args The format string and optional arguments.
  */
 void oled_printf(const char * format, ...)
@@ -186,9 +192,10 @@ void oled_printf(const char * format, ...)
 
     		// advance cursor index to beginning of next row.
     		bufferIndex = ((bufferIndex + n) / columns + 1) * columns;
+			#ifdef DEBUG
     		printf("token: \"%s\" length: %d\n", token, strlen(token));
     		printf("bufferIndex: %d\n", bufferIndex);
-
+			#endif
     		// update x/y values.
     		//x = bufferIndex % columns;
 
@@ -208,19 +215,7 @@ void oled_printf(const char * format, ...)
         bufferIndex += n;
     }
 
-    // 4. update the edOLED with the newText.
-    //oled->print(newText);
-
-
-    // don't write null
-    //int len = strlen(newText);
-    //for (int i=0; i<len - 1; i++)
-	//{
-	//	oled->write(newText[i]);
-	//}
-
-    // 5. update the cursor position.
-
+    //NOTE: edOLED is only updated from calls to oled_update().
 	free(newText);
 }
 
@@ -271,12 +266,7 @@ void oled_update()
 	// update the OLED display.
 	oled->display();
 
-	//reset the cursor.
-	//int x = bufferIndex % columns;
-	//int y = bufferIndex / columns;
-	//oled->setCursor(x, y);
-
-
+	#ifdef DEBUG
 	//see all characters in buffer.
 	for(int i = 0; i < oled_calcBufferSize(); i++){
 		char c = buffer[i];
@@ -284,6 +274,7 @@ void oled_update()
 		else                         printf("%c", buffer[i]);
 	}
 	printf("\n");
+	#endif
 }
 
 /**
@@ -308,16 +299,7 @@ void oled_setCursor(int column, int row)
 	// update our bufferIndex representing the cursor.
 	bufferIndex = get_cursor_index(column, row);
 
-	/*
-	// x and y pixel coordinates
-	int x = column * oled->getFontWidth();
-	int y = row    * oled->getFontHeight();
-
-	// update the edOLED cursor.
-	oled->setCursor(x,y);
-	*/
-
-	// fill buffer
+	// NOTE: edOLED cursor is only set when oled_update() is called.
 }
 
 /**
@@ -335,8 +317,7 @@ int oled_calcBufferSize()
 //----------------------------------------------------------------
 
 /**
- * A test method using the sparkfun code directly to verify sparkfun library
- * code has been included in the project correctly.
+ * A test method to check if the OLED screen is working.
  */
 void oled_test()
 {
