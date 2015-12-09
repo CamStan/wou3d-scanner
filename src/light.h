@@ -1,5 +1,6 @@
 /**
-* This file implements an API to operate a light
+* @file 
+* @brief Implements an API to operate a light
 * through Intels MRAA library.
 * @authors Howard Passmore, Danielle Sikich, Lauren Ryan
 */
@@ -76,7 +77,6 @@ void light_enable(struct Light * light);
 * @return	    N/A
 */
 void light_close(struct Light * light);
-
 
 #ifdef __cplusplus
 }
