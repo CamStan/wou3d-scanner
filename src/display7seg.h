@@ -5,7 +5,7 @@
  * @section DESCRIPTION
  *
  * Header for the Display 7-Segment Library
- * through UART serial control on a single pin.
+ * through uart serial control on a single pin.
  */
 
 #ifndef display7seg_H_
@@ -14,7 +14,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define BRIGHT_CONT 0x7A
 
 /**
 Reset
@@ -37,20 +36,20 @@ Allows initialization with a non-default Baud rate
 useful in case a hardware change has altered the
 default baud rate.
 
-@param RX The Serial RX pin to use
+@param rx The Serial rx pin to use
 @param BAUD Override for the BAUD rate
 */
-void display7seg_init(uint8_t RX, uint8_t BAUD);
+void display7seg_init(uint8_t rx, uint8_t BAUD);
 
 /**
 Initializer
 
-Initializes the UART with a default baud rate of 9600
+Initializes the uart with a default baud rate of 9600
 on the selected serial pin using the MRAA library.
 
-@param  RX Serial pin to use
+@param  rx Serial pin to use
 */
-void display7seg_init(uint8_t RX);
+void display7seg_init(uint8_t rx);
 /**
 Set Digit 1
 
@@ -178,7 +177,7 @@ void display7seg_error();
 /**
 De-Initializer
 
-This function closes the UART via the methods
+This function closes the uart via the methods
 described in the MRAA library.
 */
 void display7seg_close();

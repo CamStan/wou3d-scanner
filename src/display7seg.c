@@ -6,24 +6,24 @@
  * @section DESCRIPTION
  *
  * Functionality for the Display 7-Segment Library
- * through UART serial control on a single pin.
+ * through uart serial control on a single pin.
  */
-#include "DISPLAY7SEG.h"
+#include "display7seg.h"
 #include <stdint.h>
 
 /*----- DEFINES SECTION -----*/
 
 /*-- CMD --*/
-#define CLEAR 0x76
-#define DEC_CONTROL 0x77
-#define RESET 0x81
-#define BRIGHT_CONT 0x7A
+#define clear 0x76
+#define dec_control 0x77
+#define reset 0x81
+#define bright_cont 0x7A
 
 /***VARS***/
 static char display[4];
 static uint8_t dec_control[2];
 static uint8_t err;
-static mraa_uart_context UART;
+static mraa_uart_context uart;
 
 /**
 Reset
@@ -31,7 +31,7 @@ Reset
 Sends factory reset code to the display
 */
 void display7seg_reset(){
-	mraa_uart_write(UART, RESET);
+	mraa_uart_write(uart, reset);
 }
 /**
 Clear Screen
@@ -39,7 +39,7 @@ Clear Screen
 Sends the clear screen command to the display
 */
 void display7seg_clear(){
-	mraa_uart_write(UART, CLEAR);
+	mraa_uart_write(uart, clear);
 }
 /**
 Init with custom BAUD
@@ -48,24 +48,24 @@ Allows initialization with a non-default Baud rate
 useful in case a hardware change has altered the
 default baud rate.
 
-@param RX The Serial RX pin to use
+@param rx The Serial rx pin to use
 @param BAUD Override for the BAUD rate
 */
-void display7seg_init(uint8_t RX, uint8_t BAUD){
-	UART = mraa_uart_init(RX);
-	mraa_uart_set_baudrate(UART, BAUD);
+void display7seg_init(uint8_t rx, uint8_t BAUD){
+	uart = mraa_uart_init(rx);
+	mraa_uart_set_baudrate(uart, BAUD);
 }
 /**
 Initializer
 
-Initializes the UART with a default baud rate of 9600
+Initializes the uart with a default baud rate of 9600
 on the selected serial pin using the MRAA library.
 
-@param  RX Serial pin to use
+@param  rx Serial pin to use
 */
-void display7seg_init(uint8_t RX){
-	UART = mraa_uart_init(RX);
-	mraa_uart_set_baudrate(UART, 9600);
+void display7seg_init(uint8_t rx){
+	uart = mraa_uart_init(rx);
+	mraa_uart_set_baudrate(uart, 9600);
 }
 
 /**
@@ -133,7 +133,7 @@ to 255.
 @param  Brightness value to set brightness
 */
 void display7seg_setBright(uint8_t Brightness){
-	display7seg_sendCmd(BRIGHT_CONT, Brightness);
+	display7seg_sendCmd(bright_cont, Brightness);
 }
 
 /**
@@ -196,8 +196,8 @@ new functionality in the future.
 @param cmd The actual command to be sent.
 */
 void display7seg_sendCmd(uint8_t cmdType, uint8_t cmd){
-	mraa_uart_write(UART,cmdType);
-	mraa_uart_write(UART,cmd);
+	mraa_uart_write(uart,cmdType);
+	mraa_uart_write(uart,cmd);
 }
 /**
 Display
@@ -207,12 +207,12 @@ the triggers for decimal and degree and sets
 the display accordingly to show the information.
 */
 void display7seg_Display(){
-	mraa_uart_write(UART,display[0]);
-	mraa_uart_write(UART,display[1]);
-	mraa_uart_write(UART,display[2]);
-	mraa_uart_write(UART,display[3]);
-	mraa_uart_write(UART,DEC_CONTROL);
-	mraa_uart_write(UART,(dec_control[0] | dec_control[1]));
+	mraa_uart_write(uart,display[0]);
+	mraa_uart_write(uart,display[1]);
+	mraa_uart_write(uart,display[2]);
+	mraa_uart_write(uart,display[3]);
+	mraa_uart_write(uart,dec_control);
+	mraa_uart_write(uart,(dec_control[0] | dec_control[1]));
 }
 
 /**
@@ -250,10 +250,10 @@ void display7seg_error(){
 /**
 De-Initializer
 
-This function closes the UART via the methods
+This function closes the uart via the methods
 described in the MRAA library.
 */
 void display7seg_close(){
-		mraa_uart_stop(UART);
+		mraa_uart_stop(uart);
 		mraa_uart_deinit();
 }
