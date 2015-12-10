@@ -38,7 +38,7 @@ Clear Screen
 
 Sends the CLEAR screen command to the display
 */
-void display7seg_CLEAR(){
+void display7seg_clear(){
 	mraa_uart_write(uart, CLEAR);
 }
 /**
@@ -51,9 +51,9 @@ default baud rate.
 @param rx The Serial rx pin to use
 @param BAUD Override for the BAUD rate
 */
-void display7seg_init(uint8_t rx, uint8_t BAUD){
+void display7seg_init(uint8_t rx, uint8_t baud){
 	uart = mraa_uart_init(rx);
-	mraa_uart_set_baudrate(uart, BAUD);
+	mraa_uart_set_baudrate(uart, baud);
 }
 /**
 Initializer

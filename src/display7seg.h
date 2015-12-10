@@ -39,7 +39,7 @@ default baud rate.
 @param rx The Serial rx pin to use
 @param BAUD Override for the BAUD rate
 */
-void display7seg_init(uint8_t rx, uint8_t BAUD);
+void display7seg_init(uint8_t rx, uint8_t baud);
 
 /**
 Initializer
