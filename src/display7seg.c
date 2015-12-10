@@ -22,7 +22,7 @@
 
 /***VARS***/
 static char display[4];
-static char decimal_control[2];
+static uint8_t decimal_control[2];
 static uint8_t err;
 static mraa_uart_context uart;
 
@@ -146,7 +146,7 @@ screen as " Err" for easy debugging.
 
 @param  on Value of on or off
 */
-void display7seg_setDecimal(char on){
+void display7seg_setDecimal(uint8_t on){
 	if(on == 1){
 		decimal_control[0] = 0x10;
 	}
@@ -169,7 +169,7 @@ screen as " Err" for easy debugging.
 
 @param  on Value of on or off
 */
-void display7seg_setDegree(char on){
+void display7seg_setDegree(uint8_t on){
 	if(on == 1){
 		decimal_control[1] = 0x20;
 	}
