@@ -1,4 +1,6 @@
 /**
+ * @file
+ * @brief - this code initializes a struct laser that can be used to set brightness and turn on and off lasers
  * @authors Kim Marberry, Jared Staben, Matthew Stroud, Clara Pratt
  */
 #ifndef LASER_H
@@ -9,19 +11,19 @@ extern "C"{
 
 #include "mraa.h"
 
-// Laser Vmod (digital input to laser controller)
-#define VMOD 3 // laser-controller depth of field maybe?
-// Laser Power (MOSFET gate)
-#define POWER 2 // gate
-#define HERTZ 10 //sets the Hz to 100Hz
-//sets contexts
+
+/**
+ * This is our struct for our Laser.
+ * Our struct has two context pins needed for the functionality to work
+ * There are two integer values to allow for turning the Laser on and off.
+ * laser_vmod and laser_poer contain the pin numbers.
+ */
 struct Laser
 {
         mraa_pwm_context laser_vmod;
         mraa_gpio_context laser_power;
-        // initial brightness of laser
-        float brightness; //this is a set starting brightness
-        float step; //is the amount which you want to step the brightness
+       // initial brightness of laser
+        int period;// this is value for the period
         int ON;
         int OFF;
 };
@@ -31,68 +33,66 @@ struct Laser
 
 
 /**
- * InitialzerLazer
- * 
+ * This is our function that initializes our Laser struct.
+ * It takes in two integers for the Laser module vMod and MOSFET gate power.
+ * It creates a Laser struct, allocates memory for it, and set the pins to the two
+ * pin contexts in the Laser struct.
+ * It also sets the direction of the Laser.
+ * @param power is the pin initializer.
  */
-void initializeLazer(struct Laser *laser);
+struct Laser* laser_init(int vMOD, int power);
 
 /**
- * Sets the hertz
- * 
+ * This function sets the period for the laser struct.
+ * @param period sets the value for the PWM.
  */
-void setPwmParameters(struct Laser *laser);
+void laser_setPeriod(struct Laser *laser, int period);
 
 /**
- * Enables laser functionality
- * 
+ * Enables laser functionality.
+ * @param laser, enable laser functionality on the given pin.
  */
-void laserEnable(struct Laser *laser);
+void laser_enable(struct Laser *laser);
 
 /**
- * Disables laser functionality
- * 
+ * Disables laser functionality.
+ * @param disables the laser functionality on the given pin.
  */
-void laserDisable(struct Laser *laser);
+void laser_disable(struct Laser *laser);
 
 /**
- * Turns the power to the laser on
- * 
+ * Turns the power to the laser on.
+ * @param turns the power to the pin on.
  */
-void laserOn(struct Laser *laser);
+void laser_on(struct Laser *laser);
 
 /**
  * Turns the power to the laser off
- * 
+ * @param turns the power of the pin to off
  */
-void laserOff(struct Laser *laser);
+void laser_off(struct Laser *laser);
 
 /**
  * set desired scan brightness
  * set brightness value from 0.1 to 1.0
+ * @param brightness is float value that can be adjusted between the given period to adjust the brightness of the laser.
  */
+void laser_setBrightness(struct Laser *laser, float brightness);
 
-void laser_setBrightness(struct Laser *laser, float value);
-
-/**
- * Increases the period to a maximum of 1.0
- * brightness = mraa_pwm_write(laser, brightness); brightness is can change by 0.1 + value
- */
-void laser_setBrightnessLevelUp(struct Laser *laser);
-
-/**
- * Decreases the period to a minimum of 0.1
- * brightness = mraa_pwm_write(laser, brightness); brightness is can change by 0.1 - value
- */
-void setBrightnessLevelDown(struct Laser *laser);
 /**
  * Zeros out the program
- * 
+ * @param closes the pins of the GPIO and PWM, along with freeing up the memory used by the struct.
  */
-void laser_close();
+void laser_close(struct Laser* laser);
 
-#ifdef __cplusplsu
+#ifdef __cplusplus
 }
 #endif
 
 
 #endif /* LASER_H */
+
+
+
+
+

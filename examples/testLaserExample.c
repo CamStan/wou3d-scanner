@@ -4,36 +4,30 @@
 #include <unistd.h>
 #include "laser.h"
 
-
+#include "hardware.h"
 
 int main()
 {
-	struct Laser * laser;
-	initializeLazer(&laser);
-	setPwmParameters(&laser);
-	laserEnable(&laser);
-	laserOn(&laser);
-	laser_setBrightness(&laser, 0.5);
+	struct Laser * laser = laser_init(LASER_VMOD,LASER_POWER);
+
+	laser_setPeriod(laser);
+	laser_setBrightness(laser, 0.1);
+	laser_on(laser);
+	laser_enable(laser);
 	sleep(2);
-	laser_setBrightnessLevelUp(&laser);
-	sleep(1);
-	laser_setBrightnessLevelUp(&laser);
-	sleep(1);
-	laser_setBrightnessLevelUp(&laser);
+	laser_setBrightness(laser, 0.5);
 	sleep(2);
-	setBrightnessLevelDown(&laser);
-	sleep(1);
-	setBrightnessLevelDown(&laser);
-	sleep(1);
-	setBrightnessLevelDown(&laser);
-	sleep(1);
-	setBrightnessLevelDown(&laser);
+	laser_setBrightness(laser, 0.8);
 	sleep(2);
-	laserDisable(&laser);
-	sleep(1);
-	laserOff(&laser);
-	sleep(1);
-	laser_close(&laser);
+	laser_setBrightness(laser, 1.0);
+	sleep(2);
+	laser_setBrightness(laser, 0.5);
+	sleep(2);
+	laser_setBrightness(laser, 0.1);
+	sleep(2);
+	laser_disable(laser);
+	laser_off(laser);
+	laser_close(laser);
 
 	return MRAA_SUCCESS;
 }
