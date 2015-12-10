@@ -10,7 +10,7 @@ int main()
 {
 	struct Laser * laser = laser_init(LASER_VMOD,LASER_POWER);
 
-	laser_setPeriod(laser);
+	laser_setPeriod(laser, 10);
 	laser_setBrightness(laser, 0.1);
 	laser_on(laser);
 	laser_enable(laser);
