@@ -14,32 +14,32 @@
 /*----- DEFINES SECTION -----*/
 
 /*-- CMD --*/
-#define clear 0x76
-#define dec_control 0x77
-#define reset 0x81
-#define bright_cont 0x7A
+#define CLEAR 0x76
+#define DEC_CONTROL 0x77
+#define RESET 0x81
+#define BRIGHT_CONT 0x7A
 
 /***VARS***/
 static char display[4];
-static uint8_t dec_control[2];
+static uint8_t DEC_CONTROL[2];
 static uint8_t err;
 static mraa_uart_context uart;
 
 /**
 Reset
 
-Sends factory reset code to the display
+Sends factory RESET code to the display
 */
 void display7seg_reset(){
-	mraa_uart_write(uart, reset);
+	mraa_uart_write(uart, RESET);
 }
 /**
 Clear Screen
 
-Sends the clear screen command to the display
+Sends the CLEAR screen command to the display
 */
-void display7seg_clear(){
-	mraa_uart_write(uart, clear);
+void display7seg_CLEAR(){
+	mraa_uart_write(uart, CLEAR);
 }
 /**
 Init with custom BAUD
@@ -133,7 +133,7 @@ to 255.
 @param  Brightness value to set brightness
 */
 void display7seg_setBright(uint8_t Brightness){
-	display7seg_sendCmd(bright_cont, Brightness);
+	display7seg_sendCmd(BRIGHT_CONT, Brightness);
 }
 
 /**
@@ -150,10 +150,10 @@ screen as " Err" for easy debugging.
 */
 void display7seg_setDecimal(uint8_t on){
 	if(on == 1){
-		dec_control[0] = 0x10;
+		DEC_CONTROL[0] = 0x10;
 	}
 	if(on == 0){
-		dec_control[0] = 0x00;
+		DEC_CONTROL[0] = 0x00;
 	}
 	if(on <= -1 || on >= 1){
 		// Go to hell
@@ -174,10 +174,10 @@ screen as " Err" for easy debugging.
 */
 void display7seg_setDegree(uint8_t on){
 	if(on == 1){
-		dec_control[0] = 0x20;
+		DEC_CONTROL[0] = 0x20;
 	}
 	if(on == 0){
-		dec_control[0] = 0x00;
+		DEC_CONTROL[0] = 0x00;
 	}
 	if(on <= -1 || on >= 1){
 		//Set the error state if incorrect boolean found
@@ -211,8 +211,8 @@ void display7seg_Display(){
 	mraa_uart_write(uart,display[1]);
 	mraa_uart_write(uart,display[2]);
 	mraa_uart_write(uart,display[3]);
-	mraa_uart_write(uart,dec_control);
-	mraa_uart_write(uart,(dec_control[0] | dec_control[1]));
+	mraa_uart_write(uart,DEC_CONTROL);
+	mraa_uart_write(uart,(DEC_CONTROL[0] | DEC_CONTROL[1]));
 }
 
 /**
@@ -242,8 +242,8 @@ void display7seg_error(){
 		display[1] = 'E';
 		display[2] = 'r';
 		display[3] = 'r';
-		dec_control[0] = 0x00;
-		dec_control[1] = 0x00;
+		DEC_CONTROL[0] = 0x00;
+		DEC_CONTROL[1] = 0x00;
 		display7seg_Display();
 	}
 }
