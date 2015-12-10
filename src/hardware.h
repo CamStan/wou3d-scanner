@@ -32,6 +32,7 @@
 #define LIGHT_SOURCE_PIN	    5
 #define LIGHT_SOURCE_PERIOD         200 //default represents 5kHZ (period is in microseconds)
 #define LIGHT_SOURCE_BRIGHTNESS     1 //default light brightness is 1 (100% brightness)
+
 /**
  * Laser module MOSFET gate power supply pin -- drive high to power on
  * the laser module
