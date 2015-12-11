@@ -5,7 +5,7 @@
  */
 #ifndef LASER_H
 #define LASER_H
-#ifdef ___cplusplus
+#ifdef __cplusplus
 extern "C"{
 #endif
 
@@ -91,8 +91,3 @@ void laser_close(struct Laser* laser);
 
 
 #endif /* LASER_H */
-
-
-
-
-
