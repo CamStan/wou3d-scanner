@@ -14,7 +14,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#include <stdint.h>
 /**
 Reset
 
@@ -39,7 +39,8 @@ default baud rate.
 @param rx The Serial rx pin to use
 @param BAUD Override for the BAUD rate
 */
-void display7seg_init(uint8_t rx, uint8_t BAUD);
+//***----- Nix make does not like overload, assuming different C version issue here -----**//
+//void display7seg_init(uint8_t rx, uint8_t baud);
 
 /**
 Initializer
@@ -145,7 +146,7 @@ new functionality in the future.
 @param  cmdType The value of the command type to be sent to the display
 @param cmd The actual command to be sent.
 */
-void display7seg_sendCmd(uint8_t cmdType, uint8_t cmd);
+void display7seg_sendCmd(char cmdType, char cmd);
 /**
 Display
 
